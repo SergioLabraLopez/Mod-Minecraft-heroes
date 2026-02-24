@@ -1,0 +1,6 @@
+{
+  "parent": "block/cube_all",
+  "textures": {
+    "all": "labraheroes:block/vibranium_ore"
+  }
+}

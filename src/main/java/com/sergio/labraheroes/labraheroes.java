@@ -1,6 +1,7 @@
 package com.sergio.labraheroes;
 
 import com.mojang.logging.LogUtils;
+import com.sergio.labraheroes.block.ModBlocks;
 import net.minecraft.client.Minecraft;
 import net.minecraft.core.registries.Registries;
 import net.minecraft.world.food.FoodProperties;
@@ -53,11 +54,17 @@ public class labraheroes {
             .alwaysEat().nutrition(1).saturationMod(2f).build())));
 
     // Creates a creative tab with the id "examplemod:example_tab" for the example item, that is placed after the combat tab
-    public static final RegistryObject<CreativeModeTab> EXAMPLE_TAB = CREATIVE_MODE_TABS.register("example_tab", () -> CreativeModeTab.builder()
+    public static final RegistryObject<CreativeModeTab> LABRAHEROES_TAB = CREATIVE_MODE_TABS.register("labraheroes_tab", () -> CreativeModeTab.builder()
             .withTabsBefore(CreativeModeTabs.COMBAT)
-            .icon(() -> EXAMPLE_ITEM.get().getDefaultInstance())
+            .icon(() -> ModItems.VIBRANIUM.get().getDefaultInstance()) // El icono será tu lingote
+            .title(net.minecraft.network.chat.Component.translatable("creativetab.labraheroes_tab")) // El nombre
             .displayItems((parameters, output) -> {
-                output.accept(EXAMPLE_ITEM.get()); // Add the example item to the tab. For your own tabs, this method is preferred over the event
+                output.accept(ModItems.VIBRANIUM.get());
+                output.accept(ModBlocks.VIBRANIUM_ORE.get());
+                output.accept(ModItems.VIBRANIUM_HELMET.get());
+                output.accept(ModItems.VIBRANIUM_CHESTPLATE.get());
+                output.accept(ModItems.VIBRANIUM_LEGGINGS.get());
+                output.accept(ModItems.VIBRANIUM_BOOTS.get());
             }).build());
 
     public labraheroes(FMLJavaModLoadingContext context) {
@@ -79,7 +86,8 @@ public class labraheroes {
         MinecraftForge.EVENT_BUS.register(this);
 
         // Register the item to a creative tab
-        modEventBus.addListener(this::addCreative);
+        //modEventBus.addListener(this::addCreative);
+        ModBlocks.register(modEventBus);
 
         // Register our mod's ForgeConfigSpec so that Forge can create and load the config file for us
         context.registerConfig(ModConfig.Type.COMMON, Config.SPEC);
@@ -97,8 +105,8 @@ public class labraheroes {
         Config.items.forEach((item) -> LOGGER.info("ITEM >> {}", item.toString()));
     }
 
-    // Add the example block item to the building blocks tab
-    private void addCreative(BuildCreativeModeTabContentsEvent event) {
+
+    /*private void addCreative(BuildCreativeModeTabContentsEvent event) {
         if (event.getTabKey() == CreativeModeTabs.BUILDING_BLOCKS)
             event.accept(EXAMPLE_BLOCK_ITEM);
 
@@ -106,6 +114,8 @@ public class labraheroes {
             event.accept(ModItems.VIBRANIUM);
         }
     }
+
+     */
 
     // You can use SubscribeEvent and let the Event Bus discover methods to call
     @SubscribeEvent

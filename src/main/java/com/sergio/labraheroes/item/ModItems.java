@@ -15,6 +15,19 @@ public class ModItems {
     public static final RegistryObject<Item> VIBRANIUM = ITEMS.register("vibranium",
             () -> new Item(new Item.Properties()));
 
+    // --- TRAJE DE SUPERHÉROE (VIBRANIUM) ---
+    public static final RegistryObject<Item> VIBRANIUM_HELMET = ITEMS.register("vibranium_helmet",
+            () -> new net.minecraft.world.item.ArmorItem(ModArmorMaterials.VIBRANIUM, net.minecraft.world.item.ArmorItem.Type.HELMET, new Item.Properties()));
+
+    public static final RegistryObject<Item> VIBRANIUM_CHESTPLATE = ITEMS.register("vibranium_chestplate",
+            () -> new net.minecraft.world.item.ArmorItem(ModArmorMaterials.VIBRANIUM, net.minecraft.world.item.ArmorItem.Type.CHESTPLATE, new Item.Properties()));
+
+    public static final RegistryObject<Item> VIBRANIUM_LEGGINGS = ITEMS.register("vibranium_leggings",
+            () -> new net.minecraft.world.item.ArmorItem(ModArmorMaterials.VIBRANIUM, net.minecraft.world.item.ArmorItem.Type.LEGGINGS, new Item.Properties()));
+
+    public static final RegistryObject<Item> VIBRANIUM_BOOTS = ITEMS.register("vibranium_boots",
+            () -> new net.minecraft.world.item.ArmorItem(ModArmorMaterials.VIBRANIUM, net.minecraft.world.item.ArmorItem.Type.BOOTS, new Item.Properties()));
+
     // 3. Método para conectar esta lista al motor principal del juego
     public static void register(IEventBus eventBus) {
         ITEMS.register(eventBus);
