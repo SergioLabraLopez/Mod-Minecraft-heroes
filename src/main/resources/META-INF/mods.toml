@@ -1,0 +1,26 @@
+modLoader="javafml"
+loaderVersion="${loader_version_range}"
+license="All rights reserved"
+
+[[mods]]
+modId="labraheroes"
+version="1.0.0"
+displayName="Labra Heroes"
+authors="Sergio"
+description='''
+Mod de superhéroes exclusivo para el servidor LabraLands.
+'''
+
+[[dependencies.labraheroes]]
+modId="forge"
+mandatory=true
+versionRange="${forge_version_range}"
+ordering="NONE"
+side="BOTH"
+
+[[dependencies.labraheroes]]
+modId="minecraft"
+mandatory=true
+versionRange="${minecraft_version_range}"
+ordering="NONE"
+side="BOTH"
