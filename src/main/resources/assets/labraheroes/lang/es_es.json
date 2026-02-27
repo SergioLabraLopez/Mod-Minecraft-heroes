@@ -9,6 +9,9 @@
   "item.labraheroes.vision_helmet": "Casco de Visión",
   "item.labraheroes.vision_chestplate": "Pechera de Visión",
   "item.labraheroes.vision_leggings": "Pantalones de Visión",
-  "item.labraheroes.vision_boots": "Botas de Visión"
+  "item.labraheroes.vision_boots": "Botas de Visión",
+  "key.labraheroes.toggle_suit": "Activar/Desactivar Traje",
+  "key.labraheroes.main_attack": "Ataque Principal",
+  "key.categories.labraheroes": "Labra Heroes"
 
 }

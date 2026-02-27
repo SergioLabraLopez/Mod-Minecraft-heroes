@@ -101,6 +101,10 @@ public class labraheroes {
         // Some common setup code
         LOGGER.info("HELLO FROM COMMON SETUP");
 
+        event.enqueueWork(() -> {
+            com.sergio.labraheroes.network.PacketHandler.register();
+        });
+
         if (Config.logDirtBlock)
             LOGGER.info("DIRT BLOCK >> {}", ForgeRegistries.BLOCKS.getKey(Blocks.DIRT));
 

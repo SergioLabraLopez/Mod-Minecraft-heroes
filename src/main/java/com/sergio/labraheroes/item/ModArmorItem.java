@@ -22,9 +22,8 @@ public class ModArmorItem extends ArmorItem {
                     })
                     // --- PODERES DE VISIÓN ---
                     .put(ModArmorMaterials.VISION, new MobEffectInstance[]{
-                            new MobEffectInstance(MobEffects.SLOW_FALLING, 200, 0, false, false), // Flotar al caer
-                            new MobEffectInstance(MobEffects.NIGHT_VISION, 200, 0, false, false), // Ver en la oscuridad
-                            new MobEffectInstance(MobEffects.REGENERATION, 200, 1, false, false)  // Regeneración constante
+                            new MobEffectInstance(MobEffects.REGENERATION, 200, 1, false, false), // Regeneración 2
+                            new MobEffectInstance(MobEffects.DAMAGE_RESISTANCE, 200, 1, false, false) // Resistencia 2
                     })
                     .build();
 
@@ -35,11 +34,49 @@ public class ModArmorItem extends ArmorItem {
     // Este método se ejecuta constantemente (cada "tick" del juego) mientras el ítem esté en el inventario
     @Override
     public void inventoryTick(ItemStack stack, Level level, Entity entity, int slotId, boolean isSelected) {
-        if (!level.isClientSide()) {
-            if (entity instanceof Player player) {
-                // Comprobamos si lleva la armadura completa puesta
-                if (hasFullSuitOfArmorOn(player)) {
-                    evaluateArmorEffects(player);
+        if (entity instanceof Player player) {
+            boolean isVision = this.getMaterial() == ModArmorMaterials.VISION;
+            boolean hasFullSuit = hasFullSuitOfArmorOn(player);
+
+            // 1. Efectos de pociones (Esto SOLO va en el Servidor)
+            if (!level.isClientSide() && hasFullSuit) {
+                evaluateArmorEffects(player);
+            }
+
+            // 2. Vuelo y atravesar paredes (Esto va en AMBOS lados)
+            if (isVision && hasFullSuit) {
+                ItemStack chestplate = player.getInventory().getArmor(2);
+                boolean isActive = chestplate.hasTag() && chestplate.getTag().getBoolean("SuitActive");
+
+                if (isActive) {
+                    // Dar vuelo
+                    if (!player.getAbilities().mayfly) {
+                        player.getAbilities().mayfly = true;
+                        player.onUpdateAbilities();
+                    }
+
+                    // ATRAVESAR PAREDES (¡Ahora funciona porque el Cliente también lo lee!)
+                    if (player.getAbilities().flying) {
+                        player.noPhysics = true;
+                    } else {
+                        player.noPhysics = false;
+                    }
+                } else {
+                    // Si apagamos el traje, volvemos a ser sólidos y caemos
+                    player.noPhysics = false;
+                    if (player.getAbilities().mayfly && !player.isCreative() && !player.isSpectator()) {
+                        player.getAbilities().mayfly = false;
+                        player.getAbilities().flying = false;
+                        player.onUpdateAbilities();
+                    }
+                }
+            } else if (isVision && !hasFullSuit) {
+                // Si nos quitamos el traje por completo
+                player.noPhysics = false;
+                if (!player.isCreative() && !player.isSpectator() && player.getAbilities().mayfly) {
+                    player.getAbilities().mayfly = false;
+                    player.getAbilities().flying = false;
+                    player.onUpdateAbilities();
                 }
             }
         }

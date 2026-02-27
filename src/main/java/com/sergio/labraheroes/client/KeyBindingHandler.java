@@ -14,17 +14,27 @@ import org.lwjgl.glfw.GLFW;
 @Mod.EventBusSubscriber(modid = labraheroes.MODID, value = Dist.CLIENT, bus = Mod.EventBusSubscriber.Bus.MOD)
 public class KeyBindingHandler {
 
-    // Creamos nuestra tecla. Por defecto será la "V" (de Visión)
+    // El botón que ya tenías para encender la armadura
     public static final KeyMapping TOGGLE_SUIT_KEY = new KeyMapping(
-            "key.labraheroes.toggle_suit", // El nombre interno
-            KeyConflictContext.IN_GAME, // Solo funciona jugando, no en menús
+            "key.labraheroes.toggle_suit",
+            KeyConflictContext.IN_GAME,
             InputConstants.Type.KEYSYM,
-            GLFW.GLFW_KEY_V, // Tecla V por defecto
-            "key.categories.labraheroes" // Categoría en el menú de opciones
+            GLFW.GLFW_KEY_V,
+            "key.categories.labraheroes"
+    );
+
+    // NUEVO: Botón para el ataque (Por defecto la "R")
+    public static final KeyMapping MAIN_ATTACK_KEY = new KeyMapping(
+            "key.labraheroes.main_attack",
+            KeyConflictContext.IN_GAME,
+            InputConstants.Type.KEYSYM,
+            GLFW.GLFW_KEY_R,
+            "key.categories.labraheroes"
     );
 
     @SubscribeEvent
     public static void registerKeyBindings(RegisterKeyMappingsEvent event) {
         event.register(TOGGLE_SUIT_KEY);
+        event.register(MAIN_ATTACK_KEY); // Registramos el nuevo
     }
 }
