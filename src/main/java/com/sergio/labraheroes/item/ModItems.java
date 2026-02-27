@@ -1,5 +1,6 @@
 package com.sergio.labraheroes.item; // <-- Cambia "sergio" por el nombre de tu carpeta si es distinto
 
+import net.minecraft.world.item.ArmorItem;
 import net.minecraft.world.item.Item;
 import net.minecraftforge.eventbus.api.IEventBus;
 import net.minecraftforge.registries.DeferredRegister;
@@ -17,18 +18,31 @@ public class ModItems {
 
     // --- TRAJE DE SUPERHÉROE (VIBRANIUM) ---
     public static final RegistryObject<Item> VIBRANIUM_HELMET = ITEMS.register("vibranium_helmet",
-            () -> new net.minecraft.world.item.ArmorItem(ModArmorMaterials.VIBRANIUM, net.minecraft.world.item.ArmorItem.Type.HELMET, new Item.Properties()));
+            () -> new ModArmorItem(ModArmorMaterials.VIBRANIUM, ArmorItem.Type.HELMET, new Item.Properties()));
 
     public static final RegistryObject<Item> VIBRANIUM_CHESTPLATE = ITEMS.register("vibranium_chestplate",
-            () -> new net.minecraft.world.item.ArmorItem(ModArmorMaterials.VIBRANIUM, net.minecraft.world.item.ArmorItem.Type.CHESTPLATE, new Item.Properties()));
+            () -> new ModArmorItem(ModArmorMaterials.VIBRANIUM, ArmorItem.Type.CHESTPLATE, new Item.Properties()));
 
     public static final RegistryObject<Item> VIBRANIUM_LEGGINGS = ITEMS.register("vibranium_leggings",
-            () -> new net.minecraft.world.item.ArmorItem(ModArmorMaterials.VIBRANIUM, net.minecraft.world.item.ArmorItem.Type.LEGGINGS, new Item.Properties()));
+            () -> new ModArmorItem(ModArmorMaterials.VIBRANIUM, ArmorItem.Type.LEGGINGS, new Item.Properties()));
 
     public static final RegistryObject<Item> VIBRANIUM_BOOTS = ITEMS.register("vibranium_boots",
-            () -> new net.minecraft.world.item.ArmorItem(ModArmorMaterials.VIBRANIUM, net.minecraft.world.item.ArmorItem.Type.BOOTS, new Item.Properties()));
+            () -> new ModArmorItem(ModArmorMaterials.VIBRANIUM, ArmorItem.Type.BOOTS, new Item.Properties()));
 
-    // 3. Método para conectar esta lista al motor principal del juego
+
+    // --- TRAJE DE VISIÓN ---
+    public static final RegistryObject<Item> VISION_HELMET = ITEMS.register("vision_helmet",
+            () -> new ModArmorItem(ModArmorMaterials.VISION, ArmorItem.Type.HELMET, new Item.Properties()));
+
+    public static final RegistryObject<Item> VISION_CHESTPLATE = ITEMS.register("vision_chestplate",
+            () -> new ModArmorItem(ModArmorMaterials.VISION, ArmorItem.Type.CHESTPLATE, new Item.Properties()));
+
+    public static final RegistryObject<Item> VISION_LEGGINGS = ITEMS.register("vision_leggings",
+            () -> new ModArmorItem(ModArmorMaterials.VISION, ArmorItem.Type.LEGGINGS, new Item.Properties()));
+
+    public static final RegistryObject<Item> VISION_BOOTS = ITEMS.register("vision_boots",
+            () -> new ModArmorItem(ModArmorMaterials.VISION, ArmorItem.Type.BOOTS, new Item.Properties()));
+
     public static void register(IEventBus eventBus) {
         ITEMS.register(eventBus);
     }

@@ -1,5 +1,14 @@
 {
   "item.labraheroes.vibranium": "Lingote de Vibranium",
   "creativetab.labraheroes_tab": "Labra Heroes",
-  "block.labraheroes.vibranium_ore": "Mineral de Vibranium"
+  "block.labraheroes.vibranium_ore": "Mineral de Vibranium",
+  "item.labraheroes.vibranium_helmet": "Casco de Vibranium",
+  "item.labraheroes.vibranium_chestplate": "Pechera de Vibranium",
+  "item.labraheroes.vibranium_leggings": "Pantalones de Vibranium",
+  "item.labraheroes.vibranium_boots": "Botas de Vibranium",
+  "item.labraheroes.vision_helmet": "Casco de Visión",
+  "item.labraheroes.vision_chestplate": "Pechera de Visión",
+  "item.labraheroes.vision_leggings": "Pantalones de Visión",
+  "item.labraheroes.vision_boots": "Botas de Visión"
+
 }

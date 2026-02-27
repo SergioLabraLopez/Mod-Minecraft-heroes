@@ -65,6 +65,10 @@ public class labraheroes {
                 output.accept(ModItems.VIBRANIUM_CHESTPLATE.get());
                 output.accept(ModItems.VIBRANIUM_LEGGINGS.get());
                 output.accept(ModItems.VIBRANIUM_BOOTS.get());
+                output.accept(ModItems.VISION_HELMET.get());
+                output.accept(ModItems.VISION_CHESTPLATE.get());
+                output.accept(ModItems.VISION_LEGGINGS.get());
+                output.accept(ModItems.VISION_BOOTS.get());
             }).build());
 
     public labraheroes(FMLJavaModLoadingContext context) {

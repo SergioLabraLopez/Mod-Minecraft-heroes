@@ -9,9 +9,12 @@ import net.minecraft.world.item.crafting.Ingredient;
 import java.util.function.Supplier;
 
 public enum ModArmorMaterials implements ArmorMaterial {
-    // Definimos el Vibranium: Nombre interno, multiplicador de durabilidad, defensa (botas, piernas, pecho, casco), encantabilidad, sonido al equipar, dureza, resistencia al empuje, ítem de reparación.
+
     VIBRANIUM("vibranium", 37, new int[]{3, 6, 8, 3}, 15,
-            SoundEvents.ARMOR_EQUIP_NETHERITE, 3.0F, 0.1F, () -> Ingredient.of(ModItems.VIBRANIUM.get()));
+            SoundEvents.ARMOR_EQUIP_NETHERITE, 3.0F, 0.1F, () -> Ingredient.of(ModItems.VIBRANIUM.get())), // <--- Ojo a la coma aquí
+
+    VISION("vision", 30, new int[]{3, 5, 7, 3}, 25,
+            SoundEvents.ARMOR_EQUIP_GOLD, 2.0F, 0.0F, () -> Ingredient.of(net.minecraft.world.item.Items.AMETHYST_SHARD)); // <--- Termina en punto y coma
 
     private final String name;
     private final int durabilityMultiplier;
