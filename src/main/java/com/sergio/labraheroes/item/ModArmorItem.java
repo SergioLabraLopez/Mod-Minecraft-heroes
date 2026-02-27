@@ -9,6 +9,7 @@ import net.minecraft.world.item.ArmorItem;
 import net.minecraft.world.item.ArmorMaterial;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.level.Level;
+
 import java.util.Map;
 
 public class ModArmorItem extends ArmorItem {
@@ -79,6 +80,31 @@ public class ModArmorItem extends ArmorItem {
                     player.onUpdateAbilities();
                 }
             }
+            // --- LÓGICA ESPECIAL PARA IRON MAN ---
+            else if (this.getMaterial() == ModArmorMaterials.IRON_MAN) {
+                ItemStack chestplate = player.getInventory().getArmor(2);
+
+                if (chestplate.getItem() == ModItems.IRON_MAN_CHESTPLATE.get()) {
+                    // BLOQUEAMOS EL RESTO DE PIEZAS (0=Botas, 1=Pantalones, 3=Casco)
+                    forceDropArmorSlot(player, 0);
+                    forceDropArmorSlot(player, 1);
+                    forceDropArmorSlot(player, 3);
+
+                    boolean isActive = chestplate.hasTag() && chestplate.getTag().getBoolean("SuitActive");
+
+                    if (isActive) {
+                        // PODERES ACTIVOS (Nivel 0 es nivel 1, Nivel 1 es nivel 2)
+                        if (!player.hasEffect(MobEffects.REGENERATION))
+                            player.addEffect(new MobEffectInstance(MobEffects.REGENERATION, 200, 0, false, false));
+                        if (!player.hasEffect(MobEffects.DAMAGE_RESISTANCE))
+                            player.addEffect(new MobEffectInstance(MobEffects.DAMAGE_RESISTANCE, 200, 1, false, false));
+                        if (!player.hasEffect(MobEffects.DAMAGE_BOOST))
+                            player.addEffect(new MobEffectInstance(MobEffects.DAMAGE_BOOST, 200, 0, false, false));
+                        if (!player.hasEffect(MobEffects.NIGHT_VISION))
+                            player.addEffect(new MobEffectInstance(MobEffects.NIGHT_VISION, 200, 0, false, false));
+                    }
+                }
+            }
         }
         super.inventoryTick(stack, level, entity, slotId, isSelected);
     }
@@ -131,5 +157,39 @@ public class ModArmorItem extends ArmorItem {
 
         return helmet.getMaterial() == material && breastplate.getMaterial() == material
                 && leggings.getMaterial() == material && boots.getMaterial() == material;
+    }
+
+    private void forceDropArmorSlot(Player player, int slotIndex) {
+        ItemStack stack = player.getInventory().getArmor(slotIndex);
+        if (!stack.isEmpty()) {
+            // Intenta meterlo en el inventario normal. Si está lleno, lo tira al suelo.
+            if (!player.getInventory().add(stack)) {
+                player.drop(stack, false);
+            }
+            player.getInventory().armor.set(slotIndex, ItemStack.EMPTY);
+        }
+    }
+
+    // Este método le dice al juego qué textura 3D pintar sobre el jugador
+    @Override
+    public String getArmorTexture(ItemStack stack, Entity entity, net.minecraft.world.entity.EquipmentSlot slot, String type) {
+
+        // Si el ítem es de Iron Man...
+        if (this.getMaterial() == ModArmorMaterials.IRON_MAN) {
+
+            // Leemos si está encendido
+            boolean isActive = stack.hasTag() && stack.getTag().getBoolean("SuitActive");
+
+            if (isActive) {
+                // Modo Armadura Completa (Nanotecnología desplegada)
+                return "labraheroes:textures/models/armor/iron_man_active_layer_1.png";
+            } else {
+                // Modo Apagado (Solo el Reactor Arc)
+                return "labraheroes:textures/models/armor/iron_man_reactor_layer_1.png";
+            }
+        }
+
+        // Si es Visión o Vibranium, dejamos que use el sistema normal
+        return super.getArmorTexture(stack, entity, slot, type);
     }
 }

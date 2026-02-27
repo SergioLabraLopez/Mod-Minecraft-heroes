@@ -69,6 +69,7 @@ public class labraheroes {
                 output.accept(ModItems.VISION_CHESTPLATE.get());
                 output.accept(ModItems.VISION_LEGGINGS.get());
                 output.accept(ModItems.VISION_BOOTS.get());
+                output.accept(ModItems.IRON_MAN_CHESTPLATE.get());
             }).build());
 
     public labraheroes(FMLJavaModLoadingContext context) {
@@ -140,6 +141,21 @@ public class labraheroes {
             // Some client setup code
             LOGGER.info("HELLO FROM CLIENT SETUP");
             LOGGER.info("MINECRAFT NAME >> {}", Minecraft.getInstance().getUser().getName());
+        }
+    }
+    @SubscribeEvent
+    public void onLivingFall(net.minecraftforge.event.entity.living.LivingFallEvent event) {
+        if (event.getEntity() instanceof net.minecraft.world.entity.player.Player player) {
+            net.minecraft.world.item.ItemStack chestplate = player.getInventory().getArmor(2);
+
+            // Si es Iron Man y está encendido...
+            if (chestplate.getItem() == com.sergio.labraheroes.item.ModItems.IRON_MAN_CHESTPLATE.get()) {
+                boolean isActive = chestplate.hasTag() && chestplate.getTag().getBoolean("SuitActive");
+                if (isActive) {
+                    // Multiplicamos el daño de la caída por 0.1 (Es decir, reduce un 90% el daño)
+                    event.setDamageMultiplier(0.1F);
+                }
+            }
         }
     }
 }

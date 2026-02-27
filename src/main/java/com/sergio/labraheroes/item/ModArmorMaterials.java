@@ -14,7 +14,10 @@ public enum ModArmorMaterials implements ArmorMaterial {
             SoundEvents.ARMOR_EQUIP_NETHERITE, 3.0F, 0.1F, () -> Ingredient.of(ModItems.VIBRANIUM.get())), // <--- Ojo a la coma aquí
 
     VISION("vision", 30, new int[]{3, 5, 7, 3}, 25,
-            SoundEvents.ARMOR_EQUIP_GOLD, 2.0F, 0.0F, () -> Ingredient.of(net.minecraft.world.item.Items.AMETHYST_SHARD)); // <--- Termina en punto y coma
+            SoundEvents.ARMOR_EQUIP_GOLD, 2.0F, 0.0F, () -> Ingredient.of(net.minecraft.world.item.Items.AMETHYST_SHARD)), // <--- Coma aquí
+
+    IRON_MAN("iron_man", 15, new int[]{2, 5, 6, 2}, 9,
+            SoundEvents.ARMOR_EQUIP_IRON, 0.0F, 0.0F, () -> Ingredient.of(net.minecraft.world.item.Items.IRON_INGOT)); // <--- Punto y coma
 
     private final String name;
     private final int durabilityMultiplier;

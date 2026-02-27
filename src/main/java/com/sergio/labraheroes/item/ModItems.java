@@ -43,6 +43,10 @@ public class ModItems {
     public static final RegistryObject<Item> VISION_BOOTS = ITEMS.register("vision_boots",
             () -> new ModArmorItem(ModArmorMaterials.VISION, ArmorItem.Type.BOOTS, new Item.Properties()));
 
+    // --- TRAJE DE IRON MAN (Solo Pechera) ---
+    public static final RegistryObject<Item> IRON_MAN_CHESTPLATE = ITEMS.register("iron_man_chestplate",
+            () -> new ModArmorItem(ModArmorMaterials.IRON_MAN, ArmorItem.Type.CHESTPLATE, new Item.Properties()));
+
     public static void register(IEventBus eventBus) {
         ITEMS.register(eventBus);
     }
