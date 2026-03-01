@@ -7,6 +7,7 @@ import net.minecraft.world.entity.Entity;
 import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.item.ArmorItem;
 import net.minecraft.world.item.ArmorMaterial;
+import net.minecraft.world.item.Item;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.level.Level;
 
@@ -81,28 +82,26 @@ public class ModArmorItem extends ArmorItem {
                 }
             }
             // --- LÓGICA ESPECIAL PARA IRON MAN ---
-            else if (this.getMaterial() == ModArmorMaterials.IRON_MAN) {
+            else if (this.getMaterial() == ModArmorMaterials.IRON_MAN && this.getType() == Type.CHESTPLATE) {
                 ItemStack chestplate = player.getInventory().getArmor(2);
+                boolean isActive = chestplate.hasTag() && chestplate.getTag().getBoolean("SuitActive");
 
-                if (chestplate.getItem() == ModItems.IRON_MAN_CHESTPLATE.get()) {
-                    // BLOQUEAMOS EL RESTO DE PIEZAS (0=Botas, 1=Pantalones, 3=Casco)
-                    forceDropArmorSlot(player, 0);
-                    forceDropArmorSlot(player, 1);
-                    forceDropArmorSlot(player, 3);
+                if (isActive) {
+                    // MODO ACTIVO: Forzamos las piezas fantasma en tu cuerpo
+                    equipPhantomPiece(player, 3, ModItems.IRON_MAN_HELMET.get());
+                    equipPhantomPiece(player, 1, ModItems.IRON_MAN_LEGGINGS.get());
+                    equipPhantomPiece(player, 0, ModItems.IRON_MAN_BOOTS.get());
 
-                    boolean isActive = chestplate.hasTag() && chestplate.getTag().getBoolean("SuitActive");
-
-                    if (isActive) {
-                        // PODERES ACTIVOS (Nivel 0 es nivel 1, Nivel 1 es nivel 2)
-                        if (!player.hasEffect(MobEffects.REGENERATION))
-                            player.addEffect(new MobEffectInstance(MobEffects.REGENERATION, 200, 0, false, false));
-                        if (!player.hasEffect(MobEffects.DAMAGE_RESISTANCE))
-                            player.addEffect(new MobEffectInstance(MobEffects.DAMAGE_RESISTANCE, 200, 1, false, false));
-                        if (!player.hasEffect(MobEffects.DAMAGE_BOOST))
-                            player.addEffect(new MobEffectInstance(MobEffects.DAMAGE_BOOST, 200, 0, false, false));
-                        if (!player.hasEffect(MobEffects.NIGHT_VISION))
-                            player.addEffect(new MobEffectInstance(MobEffects.NIGHT_VISION, 200, 0, false, false));
-                    }
+                    // (Tus efectos de poción de Iron Man siguen aquí...)
+                    if (!player.hasEffect(MobEffects.REGENERATION)) player.addEffect(new MobEffectInstance(MobEffects.REGENERATION, 200, 0, false, false));
+                    if (!player.hasEffect(MobEffects.DAMAGE_RESISTANCE)) player.addEffect(new MobEffectInstance(MobEffects.DAMAGE_RESISTANCE, 200, 1, false, false));
+                    if (!player.hasEffect(MobEffects.DAMAGE_BOOST)) player.addEffect(new MobEffectInstance(MobEffects.DAMAGE_BOOST, 200, 0, false, false));
+                    if (!player.hasEffect(MobEffects.NIGHT_VISION)) player.addEffect(new MobEffectInstance(MobEffects.NIGHT_VISION, 200, 0, false, false));
+                } else {
+                    // MODO APAGADO: Borramos las piezas fantasma para que solo quede el reactor
+                    removePhantomPiece(player, 3, ModItems.IRON_MAN_HELMET.get());
+                    removePhantomPiece(player, 1, ModItems.IRON_MAN_LEGGINGS.get());
+                    removePhantomPiece(player, 0, ModItems.IRON_MAN_BOOTS.get());
                 }
             }
         }
@@ -170,21 +169,38 @@ public class ModArmorItem extends ArmorItem {
         }
     }
 
-    // Este método le dice al juego qué textura 3D pintar sobre el jugador
+    private void equipPhantomPiece(Player player, int slot, Item phantomItem) {
+        ItemStack current = player.getInventory().getArmor(slot);
+        if (current.getItem() != phantomItem) {
+            forceDropArmorSlot(player, slot); // Te quita lo que lleves puesto (ej. casco de diamante)
+            player.getInventory().armor.set(slot, new ItemStack(phantomItem)); // Genera la pieza de Iron Man
+        }
+    }
+
+    private void removePhantomPiece(Player player, int slot, Item phantomItem) {
+        ItemStack current = player.getInventory().getArmor(slot);
+        if (current.getItem() == phantomItem) {
+            player.getInventory().armor.set(slot, ItemStack.EMPTY); // Borra la pieza fantasma
+        }
+    }
+
     @Override
     public String getArmorTexture(ItemStack stack, Entity entity, net.minecraft.world.entity.EquipmentSlot slot, String type) {
 
-        // Si el ítem es de Iron Man...
+        // Si el material es Iron Man...
         if (this.getMaterial() == ModArmorMaterials.IRON_MAN) {
-
-            // Leemos si está encendido
             boolean isActive = stack.hasTag() && stack.getTag().getBoolean("SuitActive");
 
+            // Si está ACTIVO (Armadura Completa)
             if (isActive) {
-                // Modo Armadura Completa (Nanotecnología desplegada)
+                // Si la ranura es PANTALONES (slotId 1), usamos la LAYER 2
+                if (slot == net.minecraft.world.entity.EquipmentSlot.LEGS) {
+                    return "labraheroes:textures/models/armor/iron_man_active_layer_2.png";
+                }
+                // Para el resto (Casco, Pecho, Botas), usamos la LAYER 1
                 return "labraheroes:textures/models/armor/iron_man_active_layer_1.png";
             } else {
-                // Modo Apagado (Solo el Reactor Arc)
+                // Si está APAGADO (Solo Reactor), usamos la LAYER 1
                 return "labraheroes:textures/models/armor/iron_man_reactor_layer_1.png";
             }
         }

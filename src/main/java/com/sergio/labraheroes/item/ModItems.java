@@ -47,6 +47,15 @@ public class ModItems {
     public static final RegistryObject<Item> IRON_MAN_CHESTPLATE = ITEMS.register("iron_man_chestplate",
             () -> new ModArmorItem(ModArmorMaterials.IRON_MAN, ArmorItem.Type.CHESTPLATE, new Item.Properties()));
 
+    public static final RegistryObject<Item> IRON_MAN_HELMET = ITEMS.register("iron_man_helmet",
+            () -> new ModArmorItem(ModArmorMaterials.IRON_MAN, ArmorItem.Type.HELMET, new Item.Properties()));
+
+    public static final RegistryObject<Item> IRON_MAN_LEGGINGS = ITEMS.register("iron_man_leggings",
+            () -> new ModArmorItem(ModArmorMaterials.IRON_MAN, ArmorItem.Type.LEGGINGS, new Item.Properties()));
+
+    public static final RegistryObject<Item> IRON_MAN_BOOTS = ITEMS.register("iron_man_boots",
+            () -> new ModArmorItem(ModArmorMaterials.IRON_MAN, ArmorItem.Type.BOOTS, new Item.Properties()));
+
     public static void register(IEventBus eventBus) {
         ITEMS.register(eventBus);
     }
